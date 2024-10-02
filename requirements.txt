@@ -3,4 +3,4 @@ uvicorn
 openai==0.28
 sentence-transformers
 transformers
-torch
+torch==2.0.1+cpu  # torch의 CPU 버전만 설치
