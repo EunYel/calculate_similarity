@@ -42,7 +42,20 @@ def ask_gpt4(key:str, question: str, answer: str, user_answer: str):
 
         # 정규 표현식을 사용해 숫자만 추출
         similarity_score = re.findall(r'\d+', gpt_response)
-        result_return = similarity_score[0] if similarity_score else gpt_response
-        # 추출된 숫자가 있으면 첫 번째 값을 반환, 없으면 원래 응답 반환
-        return result_return
+        # result_return = similarity_score[0] if similarity_score else gpt_response
+        # # 추출된 숫자가 있으면 첫 번째 값을 반환, 없으면 원래 응답 반환
+        # return result_return
+        if similarity_score:
+            result_return = similarity_score[0]
+            return result_return
+            
+        else:
+            model = SentenceTransformer("distiluse-base-multilingual-cased-v1")
+            embeddings = model.encode([
+                user_answer,
+                answer
+            ])
+            similarities = model.similarity(embeddings, embeddings)
+            result_return = int(similarities[0][1].item() * 100)
 
+            return result_return
