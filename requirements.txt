@@ -1,3 +1,6 @@
 fastapi
 uvicorn
 openai==0.28
+sentence-transformers
+transformers
+torch
