@@ -50,12 +50,6 @@ def ask_gpt4(key:str, question: str, answer: str, user_answer: str):
             return result_return
             
         else:
-            model = SentenceTransformer("distiluse-base-multilingual-cased-v1")
-            embeddings = model.encode([
-                user_answer,
-                answer
-            ])
-            similarities = model.similarity(embeddings, embeddings)
-            result_return = int(similarities[0][1].item() * 100)
+            result_return = -50
 
             return result_return
