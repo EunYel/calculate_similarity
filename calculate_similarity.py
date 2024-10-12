@@ -6,6 +6,7 @@ api = FastAPI()
 def ask_gpt4(key:str, question: str, answer: str, user_answer: str):
     import openai
     import re  # 숫자만 추출하기 위해 정규표현식 사용
+    import requests
 
     # OpenAI API Key 설정
     openai.api_key = key
@@ -14,7 +15,7 @@ def ask_gpt4(key:str, question: str, answer: str, user_answer: str):
     # 만약 answer와 user_answer가 완전히 동일하면 0을 반환
     if question == user_answer:
         return result_return  # 두 문장이 완전히 같으면 유사도 0 반환
-    
+
     else:
         # 요청 내용 포맷팅
         content = f"""
@@ -48,8 +49,27 @@ def ask_gpt4(key:str, question: str, answer: str, user_answer: str):
         if similarity_score:
             result_return = similarity_score[0]
             return result_return
-            
-        else:
-            result_return = -50
 
-            return result_return
+        else:
+            url = "http://34.29.14.67:5000/detect"
+            data = {
+                        "text1": answer,
+                        "text2": user_answer
+            }
+            # POST 요청을 보내고 응답 받기
+            try:
+                response = requests.post(url, json=data, timeout=4)
+
+                # 상태 코드와 응답 확인
+                if response.status_code == 200:
+                    result_return = response.json().get('similarity', None)
+                    if result_return is not None:
+                        return result_return * 100
+                    else:
+                        return -50
+                else:
+                    #Error
+                    return -50
+
+            except requests.exceptions.RequestException as e:
+                print(f"Request failed: {e}")
