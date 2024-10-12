@@ -63,10 +63,8 @@ def ask_gpt4(key:str, question: str, answer: str, user_answer: str):
                 # 상태 코드와 응답 확인
                 if response.status_code == 200:
                     result_return = response.json().get('similarity', None)
-                    if result_return is not None:
-                        return result_return * 100
-                    else:
-                        return -50
+                    return result_return * 100
+                    
                 else:
                     #Error
                     return -50
