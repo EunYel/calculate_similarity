@@ -51,7 +51,7 @@ def ask_gpt4(key:str, question: str, answer: str, user_answer: str):
             return result_return
 
         else:
-            url = " http://34.64.252.14:5000/similarity"
+            url = "http://34.64.252.14:5000/similarity"
             data = {
                         "text1": answer,
                         "text2": user_answer
