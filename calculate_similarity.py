@@ -58,7 +58,7 @@ def ask_gpt4(key:str, question: str, answer: str, user_answer: str):
             }
             # POST 요청을 보내고 응답 받기
             try:
-                response = requests.post(url, json=data, timeout=4)
+                response = requests.post(url, json=data, timeout=4000)
 
                 # 상태 코드와 응답 확인
                 if response.status_code == 200:
@@ -67,7 +67,7 @@ def ask_gpt4(key:str, question: str, answer: str, user_answer: str):
 
                 else:
                     #Error
-                    return -50
+                    return -51
 
             except requests.exceptions.RequestException as e:
                 print(f"Request failed: {e}")
